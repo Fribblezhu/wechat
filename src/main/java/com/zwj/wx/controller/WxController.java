@@ -35,7 +35,7 @@ public class WxController {
     @RequestMapping(value = "/wxChat.do", method = RequestMethod.GET)
     @ResponseBody
     public String checkSingature(@RequestParam(name="timestamp") String timestamp,
-                               @RequestHeader(name = "signature") String signature,
+                               @RequestParam(name = "signature") String signature,
                                @RequestParam(name="nonce") String nonce,
                                @RequestParam(name = "echostr") String echostr) {
 
@@ -78,11 +78,19 @@ public class WxController {
             }
         }
     }
+
     @RequestMapping(value="/test.do", method = RequestMethod.POST)
     @ResponseBody
     public BaseMessage test(@RequestBody String context) {
         BaseMessage message = requestHeader.handler(context, "fribble");
         return message;
+    }
+
+    @RequestMapping(value="/test.do", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseMessage test() {
+        return  MessageUtils.assembleTextMessage("hello");
+
     }
 }
 
