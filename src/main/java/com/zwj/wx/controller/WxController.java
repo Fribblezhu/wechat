@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
@@ -50,33 +48,25 @@ public class WxController {
     }
 
     @RequestMapping(value = "/wxChat.do", method = RequestMethod.POST)
-    public void messageReceiver(HttpServletRequest request, HttpServletResponse response) {
-        Map<String, String> map = MessageUtils.toMap(request);
+    @ResponseBody
+    public String messageReceiver(@RequestBody String xmlContent) {
+
+        Map<String, String> map = MessageUtils.toMap(xmlContent);
         if (map.size() > 0) {
             String toUserName = map.get("ToUserName");
             String fromUserName = map.get("FromUserName");
             String msgType = map.get("MsgType");
             String content = map.get("Content");
-            PrintWriter out = null;
-            try {
-                out = response.getWriter();
-                String xmlString = null;
-                if ("text".equals(msgType)) {
-                    BaseMessage send = requestHeader.handler(content, fromUserName);
-                    send.setCreateTime(String.valueOf(new Date().getTime()));
-                    send.setFromUserName(toUserName);
-                    send.setToUserName(fromUserName);
-                    send.setMsgType("text");
-                    xmlString = MessageUtils.toXml(send);
-                }
-                out.write(xmlString);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if(null != out)
-                    out.close();
+            if ("text".equals(msgType)) {
+                BaseMessage send = requestHeader.handler(content, fromUserName);
+                send.setCreateTime(String.valueOf(new Date().getTime()));
+                send.setFromUserName(toUserName);
+                send.setToUserName(fromUserName);
+                send.setMsgType("text");
+                return MessageUtils.toXml(send);
             }
         }
+        return MessageUtils.toXml(MessageUtils.assembleTextMessage("系统无法给予回复!"));
     }
 
     @RequestMapping(value="/test.do", method = RequestMethod.POST)

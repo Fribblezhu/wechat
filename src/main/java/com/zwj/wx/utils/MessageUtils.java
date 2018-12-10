@@ -5,6 +5,7 @@ import com.zwj.wx.message.BaseMessage;
 import com.zwj.wx.message.TextMessage;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
@@ -27,29 +28,26 @@ public class MessageUtils {
 
     /**
      * 将传过来的xml信息转成map集合
-     * @param request
+     * @param content
      * @return
      */
-    public static Map<String,String> toMap(HttpServletRequest request) {
+    public static Map<String,String> toMap(String content) {
 
         Map<String, String> map = new HashMap<>();
-        SAXReader reader = new SAXReader();
-
+        Document doc = null;
         try {
-            InputStream in = request.getInputStream();
-            Document doc = reader.read(in);
+            doc = DocumentHelper.parseText(content);
+        } catch (DocumentException e1) {
+            e1.printStackTrace();
+        }
+        if(doc != null) {
             Element root = doc.getRootElement();
             List<Element> list = root.elements();
-            for(Element e: list){
-                map.put(e.getName(),e.getText());
+            for (Element e : list) {
+                map.put(e.getName(), e.getText());
             }
-            in.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (DocumentException e) {
-            e.printStackTrace();
         }
+
         return map;
     }
 
