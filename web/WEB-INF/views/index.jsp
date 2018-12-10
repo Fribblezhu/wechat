@@ -5,6 +5,6 @@
     <title>welcome</title>
 </head>
 <body>
-<dic>hi ! ^-^ </dic>
+<div>hi ! ^-^ </div>
 </body>
 </html>

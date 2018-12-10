@@ -1,10 +1,7 @@
 package com.zwj.wx.controller;
 
-import com.zwj.Base.BaseManager;
-import com.zwj.tuling.TuLingApplication;
 import com.zwj.wx.handler.RequestHandler;
 import com.zwj.wx.message.BaseMessage;
-import com.zwj.wx.message.TextMessage;
 import com.zwj.wx.utils.MessageUtils;
 import com.zwj.wx.utils.WxUtils;
 import org.springframework.beans.factory.annotation.Autowired;
