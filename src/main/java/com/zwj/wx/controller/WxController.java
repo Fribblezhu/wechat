@@ -24,6 +24,7 @@ import java.util.Map;
  * @description:
  */
 @Controller
+@RequestMapping("/wx")
 public class WxController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
