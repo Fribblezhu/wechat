@@ -4,6 +4,8 @@ import com.zwj.wx.handler.RequestHandler;
 import com.zwj.wx.message.BaseMessage;
 import com.zwj.wx.utils.MessageUtils;
 import com.zwj.wx.utils.WxUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -24,30 +26,26 @@ import java.util.Map;
 @Controller
 public class WxController {
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     private RequestHandler requestHeader;
 
     @RequestMapping(value = "/wxChat.do", method = RequestMethod.GET)
     @ResponseBody
-    public void checkSingature(HttpServletRequest request, HttpServletResponse response) {
-        PrintWriter out = null;
-        try {
-            out = response.getWriter();
-            String timestamp = request.getParameter("timestamp");
-            String signature = request.getParameter("signature");
-            String nonce = request.getParameter("nonce");
-            String echostr = request.getParameter("echostr");
-            if (WxUtils.sha1Hex(timestamp, nonce).equals(signature)) {
-                out.write(echostr);
-                out.flush();
-            }
-        } catch (Exception e) {
-            out.write("error");
-            out.flush();
-        }finally {
-            if(null != out)
-                out.close();
+    public String checkSingature(@RequestParam(name="timestamp") String timestamp,
+                               @RequestHeader(name = "signature") String signature,
+                               @RequestParam(name="nonce") String nonce,
+                               @RequestParam(name = "echostr") String echostr) {
+
+        logger.debug("开始授权签名:");
+        if (WxUtils.sha1Hex(timestamp, nonce).equals(signature)) {
+            logger.debug("授权签名成功!");
+            return echostr;
         }
+        logger.debug("授权失败!");
+        logger.debug("授权签名结束！");
+        return "error";
     }
 
     @RequestMapping(value = "/wxChat.do", method = RequestMethod.POST)
