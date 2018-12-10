@@ -22,13 +22,16 @@
           class="org.springframework.data.redis.core.RedisTemplate"
           p:connection-factory-ref="jedisConnFactory"/>
 
-    <bean id="addExpressCommand" class="com.zwj.express.AddExpressCommand">
-        <constructor-arg index="0" ref="redisTemplate"/>
-    </bean>
+    <!--<bean id="addExpressCommand" class="com.zwj.express.AddExpressCommand">-->
+        <!--<constructor-arg index="0" ref="redisTemplate"/>-->
+    <!--</bean>-->
 
-    <bean id = "commandManager" class="com.zwj.manager.CommandManger">
-        <constructor-arg index="0" ref="addExpressCommand"/>
-    </bean>
+    <!--<bean id="checkExpressCommand" class="com.zwj.express.CheckExpressComand">-->
+    <!--</bean>-->
+    <!---->
+    <!--<bean id = "commandManager" class="com.zwj.manager.CommandManger">-->
+        <!--<constructor-arg index="0" ref="addExpressCommand"/>-->
+    <!--</bean>-->
 
 
 </beans>

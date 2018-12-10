@@ -6,10 +6,21 @@ import com.zwj.wx.message.BaseMessage;
 import com.zwj.wx.utils.Aes;
 import com.zwj.wx.utils.HttpUtils;
 import com.zwj.wx.utils.Md5;
+import com.zwj.wx.utils.MessageUtils;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
+import org.omg.PortableServer.POA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
+
+import java.io.IOException;
 
 /**
  * @author: zwj
@@ -19,6 +30,8 @@ import org.springframework.util.StringUtils;
  */
 @Component
 public class TuLingApplication {
+
+    private CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 
     @Autowired
     private TuLingServiceImpl tuLingService;
@@ -53,8 +66,17 @@ public class TuLingApplication {
         object.put("timestamp",timestamp);
         object.put("data",data);
         //获取请求
-        String answer = HttpUtils.sendPost(object.toJSONString(),API_URL);
-        return tuLingService.parserAnswer(answer);
+        HttpPost post = new HttpPost(API_URL);
+        StringEntity entity = new StringEntity(object.toJSONString(), ContentType.APPLICATION_JSON);
+        post.setEntity(entity);
+        try {
+            CloseableHttpResponse response = this.httpClient.execute(post);
+            if(response != null && response.getStatusLine().getStatusCode() == 200)
+                return tuLingService.parserAnswer(EntityUtils.toString(response.getEntity(), "utf-8"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return MessageUtils.assembleTextMessage("恩？机器人失踪了？？？");
     }
 
 }

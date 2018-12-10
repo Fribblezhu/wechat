@@ -57,21 +57,20 @@ public class WxController {
     public void messageReceiver(HttpServletRequest request, HttpServletResponse response) {
         Map<String, String> map = MessageUtils.toMap(request);
         if (map.size() > 0) {
-            String ToUserName = map.get("ToUserName");
-            String FromUserName = map.get("FromUserName");
-            String MsgType = map.get("MsgType");
+            String toUserName = map.get("ToUserName");
+            String fromUserName = map.get("FromUserName");
+            String msgType = map.get("MsgType");
             String content = map.get("Content");
             PrintWriter out = null;
             try {
                 out = response.getWriter();
                 String xmlString = null;
-                if ("text".equals(MsgType)) {
-                    TextMessage send = new TextMessage();
+                if ("text".equals(msgType)) {
+                    BaseMessage send = requestHeader.handler(content, fromUserName);
                     send.setCreateTime(String.valueOf(new Date().getTime()));
-                    send.setFromUserName(ToUserName);
-                    send.setToUserName(FromUserName);
+                    send.setFromUserName(toUserName);
+                    send.setToUserName(fromUserName);
                     send.setMsgType("text");
-                    send.setContent("您发送的信息是:" + content);
                     xmlString = MessageUtils.toXml(send);
                 }
                 out.write(xmlString);
@@ -86,7 +85,7 @@ public class WxController {
     @RequestMapping(value="/test.do", method = RequestMethod.POST)
     @ResponseBody
     public BaseMessage test(@RequestBody String context) {
-        BaseMessage message = requestHeader.handler(context);
+        BaseMessage message = requestHeader.handler(context, "fribble");
         return message;
     }
 }

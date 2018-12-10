@@ -5,6 +5,7 @@ import com.zwj.Base.BaseWorker;
 import com.zwj.wx.message.BaseMessage;
 import javafx.concurrent.Worker;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ import java.util.List;
 public abstract  class AbstractManager implements BaseManager {
 
 
-    protected List<BaseWorker>  workers;
+    protected List<BaseWorker>  workers = new ArrayList<>();
 
     @Override
     public boolean isDuty(String context) {

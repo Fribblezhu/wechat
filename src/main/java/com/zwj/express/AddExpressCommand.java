@@ -16,6 +16,7 @@ import java.util.UUID;
  * @Time: 2:37 PM
  * @description:
  */
+@Component
 public class AddExpressCommand implements BaseCommand {
 
     // command like "#command:addExpress:name:order"
@@ -33,8 +34,7 @@ public class AddExpressCommand implements BaseCommand {
         String[] commands = commandStr.split(":");
         if(commands.length >= 4) {
             String uuid = UUID.randomUUID().toString();
-            redisTemplate.opsForHash().put(RedisConst.EXPRESS_USER_KEY, commands[2], uuid);
-            redisTemplate.opsForValue().append(uuid, commands[3]);
+            redisTemplate.opsForHash().put(RedisConst.EXPRESS_USER_KEY+ "_" + commands[2],  uuid, commands[3]);
             return MessageUtils.assembleTextMessage(this.getReturnContent(true, commands[2], commands[3]));
         }
         return MessageUtils.assembleTextMessage(this.getReturnContent(false, null, null));

@@ -9,6 +9,7 @@ import com.zwj.wx.message.BaseMessage;
 import com.zwj.wx.message.News;
 import com.zwj.wx.message.NewsMessage;
 import com.zwj.wx.message.TextMessage;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,6 +21,7 @@ import java.util.List;
  * @Time: 8:36 PM
  * @description:
  */
+@Service
 public class TuLingServiceImpl implements TuLingService{
 
 

@@ -103,9 +103,12 @@ public class KuaiDi100Application {
                     CloseableHttpResponse response = this.client.execute(get);
                     if(response.getStatusLine().getStatusCode() == 200 ) {
                         String resultStr =   EntityUtils.toString(response.getEntity());
-                        System.out.println(resultStr);
-                        if(this.isSuccess(resultStr))
-                            return resultStr;
+                        if(this.isSuccess(resultStr)) {
+                            JSONObject result = JSON.parseObject(resultStr);
+                            List<ExpressInfoEntity> infos = result.getJSONArray("data").toJavaList(ExpressInfoEntity.class);
+                            String info = "时间：" +infos.get(0).getTime() + "\r\n位置：" + infos.get(0).getContext();
+                            return info;
+                        }
                     }
                 }
             }

@@ -10,6 +10,6 @@ import com.zwj.wx.message.BaseMessage;
  */
 public interface BaseHandler {
 
-    BaseMessage handler(String content);
+    BaseMessage handler(String content, String userId);
 
 }

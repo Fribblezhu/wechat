@@ -1,8 +1,10 @@
 package com.zwj.manager;
 
 import com.zwj.Base.BaseCommand;
+import com.zwj.express.AddExpressCommand;
 import com.zwj.wx.message.BaseMessage;
-import java.util.Arrays;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author: zwj
@@ -10,18 +12,14 @@ import java.util.Arrays;
  * @Time: 10:56 PM
  * @description:
  */
-
-
-
-
+@Component
 public class CommandManger extends AbstractManager {
 
     private String prefix = "#command";
 
-
-
-    public CommandManger(BaseCommand... commands) {
-        this.workers = Arrays.asList(commands);
+    @Autowired
+    public CommandManger(AddExpressCommand addCommand) {
+        this.workers.add(addCommand);
     }
 
 

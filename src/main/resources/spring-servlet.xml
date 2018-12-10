@@ -12,7 +12,7 @@
 
     <context:annotation-config/>
 
-    <context:component-scan base-package="com.zwj.wx.controller, com.zwj.wx.handler"/>
+    <context:component-scan base-package="com.zwj.wx.controller, com.zwj.wx.handler, com.zwj.express, com.zwj.manager, com.zwj.tuling"/>
 
 
     <mvc:annotation-driven>
