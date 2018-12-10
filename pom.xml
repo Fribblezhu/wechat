@@ -110,6 +110,12 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.2.2</version>
+                <configuration>
+                    <!--指定web.xml文件的位置-->
+                    <webXml>web\WEB-INF\web.xml</webXml>
+                    <!--指定jsp等文件所在位置-->
+                    <warSourceDirectory>web</warSourceDirectory>
+                </configuration>
             </plugin>
         </plugins>
 
